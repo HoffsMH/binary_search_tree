@@ -7,12 +7,36 @@ require 'pry'
 
 require './node.rb'
 require './binary_tree'
+
 describe "driver_code" do
   it "can load a single value into a node" do
-    demo
+    expected =  2
+    result  = add_single_val(2).value
+    
+    assert_equal(expected, result)
     
   end
-  it "can load a file with one value into a node"
+  it "can load a file with one value into a node" do
+    
+    sample_handle = File.readlines('sample_file.txt')
+    head = 0
+    sample_handle.each do |line|
+      if sample_handle[0] == line
+        head = Node.new(line)
+      else
+        head.add(Node.new(line))
+      end
+    end
+    
+    expected = sample_handle[0]
+    result = head.value
+    
+    
+    assert_equal(expected, result)
+    
+    
+    
+  end
   it "can load a file with many values into many nodes"
 end
 describe Node do
@@ -47,7 +71,7 @@ describe Node do
       
       assert_equal(expected, result)       
     end
-      
+    
     it "makes a new Node object with a right attr" do
       head = Node.new(5)
       head.right = "hi"
@@ -58,7 +82,7 @@ describe Node do
       assert_equal(expected, result)       
       
     end
-
+    
     it "makes a new Node object whose right and left attr can be another node object" do
       head = Node.new(4)
       head.right = Node.new(5)
@@ -127,7 +151,110 @@ describe Node do
       
       assert_equal(expected, result)
     end
+    it "does not make duplicate nodes" do
+      
+      head = Node.new(5)
+      right_node = Node.new(7)
+      right_node2 = Node.new(7)
+      head.add(right_node)
+      head.add(right_node2)
+      
+      result = head.right.value
+      expected = right_node.value
+      
+      assert_equal(expected, result)
+      
+      result = head.right.right
+      expected = nil
+      
+      assert_equal(expected, result)
+      
+      
+      result = head.right.left
+      expected = nil
+      
+      assert_equal(expected, result)
+    end
     
+    
+  end
+  describe ".max()" do
+    it "returns head if head is only node in tree" do
+      head = Node.new(1)
+      
+      expected = head
+      result = head.max
+      
+      assert_equal(expected, result)
+    end
+    it "returns 1 right from head if there is one" do
+      head = Node.new(1)
+      head.add(Node.new(3))
+      
+      expected = head.right
+      result = head.max
+      
+      assert_equal(expected, result)
+    end
+    it "returns 2 right from head if there is one" do
+      head = Node.new(1)
+      head.add(Node.new(3))
+      head.add(Node.new(5))
+      
+      expected = head.right.right.value
+      result = head.max.value
+      
+      assert_equal(expected, result)
+    end
+    it "never makes a left turn while searching" do
+      head = Node.new(1)
+      head.add(Node.new(5))
+      head.add(Node.new(3))
+      
+      expected = head.right.value
+      result = head.max.value
+      
+      assert_equal(expected, result)
+    end
+  end
+  describe ".min()" do
+    it "returns head if head is only node in tree" do
+      head = Node.new(1)
+      
+      expected = head
+      result = head.min
+      
+      assert_equal(expected, result)
+    end
+    it "returns 1 left from head if there is one" do
+      head = Node.new(3)
+      head.add(Node.new(1))
+      
+      expected = head.left
+      result = head.min
+      
+      assert_equal(expected, result)
+    end
+    it "returns 2 left from head if there is one" do
+      head = Node.new(5)
+      head.add(Node.new(3))
+      head.add(Node.new(1))
+      
+      expected = head.left.left.value
+      result = head.min.value
+      
+      assert_equal(expected, result)
+    end
+    it "never makes a right turn while searching" do
+      head = Node.new(5)
+      head.add(Node.new(1))
+      head.add(Node.new(3))
+      
+      expected = head.left.value
+      result = head.min.value
+      
+      assert_equal(expected, result)
+    end
   end
   describe ".search(value)" do
     it "returns true or false if the head element is the one we are searching for" do

@@ -23,6 +23,20 @@ class Node
     end
     
   end
+  def max
+    if self.right == nil
+      return self
+    else
+      right.max
+    end
+  end
+  def min
+    if self.left == nil
+      return self
+    else
+      left.min
+    end
+  end
   
   def search(value)
     if self.value == value
