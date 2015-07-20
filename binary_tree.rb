@@ -4,18 +4,36 @@ def add_single_val(value)
   head = Node.new(value)   
   head   
 end
+def load_file(filename='sample_file.txt')
+  handle = File.readlines(filename)
+end
+def load_array(array)
 
-def load_from_file
-  sample_handle = File.readlines('sample_file.txt')
   head = 0
-  sample_handle.each do |line|
-    if sample_handle[0] == line
+  array.each do |line|
+    if array[0] == line
       head = Node.new(line)
     else
       head.add(Node.new(line))
     end
   end
-  sample_handle
+  head
 end
 
-sample_handle = load_from_file
+
+
+
+if ARGV[0] == nil   
+  sample_array = load_file
+else 
+  sample_array = load_file(ARGV[0])
+end
+head = load_array(sample_array)
+
+
+# puts "Output file?"
+# output = gets.chomp 
+
+# if output
+  
+# end

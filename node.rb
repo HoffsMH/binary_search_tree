@@ -58,6 +58,31 @@ class Node
     end
     
   end
+  def sort
+    output_array = []
+    if !self.left.nil?
+      output_array << self.left.sort
+      output_array << self.value
+    end
+    if self.left.nil?       
+      output_array << self.value
+    end
+    
+    if !self.right.nil?
+      output_array << self.right.sort
+    end
+    output_array.flatten
+  end
+  def sort_to_file(filename)
+    handle = File.open(filename, 'w')
+    
+    sorted_array = self.sort
+
+    sorted_array.each do |value|
+      handle.write(value.to_s + "\n")
+    end
+    handle.close
+  end
   
   
 end

@@ -31,7 +31,7 @@ describe "driver_code" do
     expected = sample_handle[0]
     result = head.value
     
-    
+
     assert_equal(expected, result)
     
     
@@ -338,6 +338,108 @@ describe Node do
       
     end
     
+  end
+  describe ".sort" do
+    it "returns a one element array if head is the only node" do
+      head = Node.new(2)
+      expected = [2]
+      result = head.sort
+      
+      assert_equal(expected, result)
+    end
+    it "returns a two element array if there are 2 nodes" do
+      head = Node.new(2)
+      head.add(Node.new(1))
+      expected = [1,2]
+      result = head.sort
+      
+      assert_equal(expected ,result)
+    end
+    it "returns a 3 element array if there are 3 nodes. One on the right one on the left" do
+      head = Node.new(3)
+      head.add(Node.new(1))
+      head.add(Node.new(4))
+      expected = [1,3,4]
+      result = head.sort
+      
+      assert_equal(expected ,result)
+    end
+    it "returns a 3 element array if there are 3 nodes. two on the left" do
+      head = Node.new(5)
+      head.add(Node.new(4))
+      head.add(Node.new(3))
+      expected = [3,4,5]
+      result = head.sort
+      
+      assert_equal(expected ,result)
+    end
+    it "returns a 4 element array if there are 4 nodes. two on the left one on the right" do
+      head = Node.new(5)
+      head.add(Node.new(4))
+      head.add(Node.new(3))
+      head.add(Node.new(6))
+      expected = [3,4,5,6]
+      result = head.sort
+      
+      assert_equal(expected ,result)
+    end
+    it "returns a 5 element array if there are 5 nodes. fork on the left and one on the right" do
+      head = Node.new(7)
+      head.add(Node.new(4))
+      head.add(Node.new(5))
+      head.add(Node.new(3))
+      head.add(Node.new(8))
+      expected = [3,4,5,7,8]
+      result = head.sort
+      
+      assert_equal(expected ,result)
+    end
+    
+    it "returns a 6 element array if there are 6 nodes. fork on both sides" do
+      head = Node.new(7)
+      head.add(Node.new(4))
+      head.add(Node.new(5))
+      head.add(Node.new(3))
+      head.add(Node.new(10))
+      head.add(Node.new(8))
+      head.add(Node.new(12))
+      expected = [3,4,5,7,8,10,12]
+      result = head.sort
+      
+      assert_equal(expected ,result)
+    end
+    it "can sort lots of numbers" do
+      array_to_be_sorted = (1..1000).to_a.sample(100)
+      head = load_array(array_to_be_sorted)
+      
+      expected = array_to_be_sorted.sort
+      result = head.sort           
+      
+      assert_equal(expected, result)       
+    end
+    
+  end
+  describe ".sort_to_file(filename)" do
+    it "takes a parameter and creates a file in the paramter's name" do
+      head = Node.new(15)
+      head.sort_to_file('sorted_array.txt')
+      
+      result = File.file?('sorted_array.txt')  
+      expected = true  
+      
+      assert_equal(expected, result)
+    end
+    it "sorts the tree and prints the sorted values in ascending order into the file one value per line" do
+      array_to_be_sorted = values = values = (1..1000).to_a.sample(100)
+      head = load_array(array_to_be_sorted)
+      
+      head.sort_to_file('sorted_array.txt')
+      
+      result = head.sort
+      expected = array_to_be_sorted.sort
+      
+      assert_equal(expected, result)
+    end
   end
   describe ".delete(value)" do
   end
